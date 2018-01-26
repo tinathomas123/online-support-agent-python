@@ -22,7 +22,7 @@ def home():
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
-    req = request.get_json(silent=False, force=False)
+    req = request.get_json(silent=False, force=True)
 
     print("Request:")
     print(json.dumps(req, indent=4))
@@ -57,5 +57,9 @@ def makeWebhookResult(req):
         "source": "apiai-onlinestore-shipping"
     }
 
+if __name__ == '__main__':
+    port = int(os.getenv('PORT', 5000))
 
+
+    app.run(debug=True, port=port, host='0.0.0.0')
 
