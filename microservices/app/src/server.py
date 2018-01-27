@@ -1,6 +1,6 @@
 
 # from flask import jsonify
-
+import ast
 import urllib
 import requests
 import json
@@ -33,7 +33,7 @@ def webhook():
     print("String")
     print(strContent)
     
-    req = json.loads(strContent)
+    req = ast.literal_eval(strContent)
 
     print("Request:")
     print(json.dumps(req, indent=4))
