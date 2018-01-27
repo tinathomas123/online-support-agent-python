@@ -60,7 +60,7 @@ def makeWebhookResult(req):
         "source": "apiai-onlinestore-shipping"
     }
 
-@app.route("/get_articles")
+@app.route("/get_articles", methods=['POST'])
 def get_articles():
     # This is the url to which the query is made
     url = "https://data.abstraction59.hasura-app.io/v1/query"
