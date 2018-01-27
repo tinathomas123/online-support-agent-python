@@ -77,6 +77,7 @@ def get_articles():
     # Setting headers
     headers = {
         "Content-Type": "application/json"
+        "Authorization": "Bearer d3a378c0f2330fc9d555c47ff4035adc374ba5b52b0c17e7"
     }
 
     # Make the query and store response in resp

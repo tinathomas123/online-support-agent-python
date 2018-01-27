@@ -1,0 +1,7 @@
+- args:
+    sql: CREATE TABLE "shipping-costs"("id" serial NOT NULL, "zone" text NOT NULL,
+      "cost" integer NOT NULL, PRIMARY KEY ("id") )
+  type: run_sql
+- args:
+    name: shipping-costs
+  type: add_existing_table_or_view

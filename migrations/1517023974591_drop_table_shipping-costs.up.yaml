@@ -1,0 +1,3 @@
+- args:
+    sql: DROP TABLE "shipping-costs"
+  type: run_sql
