@@ -51,7 +51,7 @@ def webhook():
     print(res)
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
-    return r
+    return r.json()
 
 def makeWebhookResult(req):
     if req.get("result").get("action") != "shipping.cost":
@@ -77,7 +77,18 @@ def makeWebhookResult(req):
 
 @app.route("/get_articles")
 def get_articles():
-    query = {
+    var fetchAction =  require('fetch');
+
+    var url = "https://data.abstraction59.hasura-app.io/v1/query";
+
+    var requestOptions = {
+        "method": "POST",
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    };
+
+    var body = {
         "type": "select",
         "args": {
             "table": "article",
@@ -85,13 +96,18 @@ def get_articles():
                 "*"
             ]
         }
-    }
-    print(dataUrl)
-    print(json.dumps(query))
-    response = requests.post(
-        dataUrl, data=json.dumps(query)
-    )
-    data = response.json()
-    print(json.dumps(data))
-    return jsonify(data=data)
+    };
+
+    requestOptions.body = JSON.stringify(body);
+
+    fetchAction(url, requestOptions)
+    .then(function(response) {
+            return response.json();
+    })
+    .then(function(result) {
+            console.log(result);
+    })
+    .catch(function(error) {
+            console.log('Request Failed:' + error);
+    });
 
