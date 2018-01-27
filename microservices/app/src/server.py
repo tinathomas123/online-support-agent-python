@@ -5,8 +5,7 @@ import urllib
 import requests
 import json
 import os
-import json
-import codecs
+
 
 from flask import Flask
 from flask import request
@@ -28,9 +27,7 @@ def home():
 def webhook():
 
     print(request.data)
-    #content = codecs.decode(request.data,'utf-8')
-    content=json.dumps(request.data)
-    req=json.loads(content)
+    req = json.loads(request.data)
 
     print("Request:")
     print(json.dumps(req, indent=4))
