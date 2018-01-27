@@ -2,9 +2,9 @@ from src import app
 # from flask import jsonify
 
 import urllib
+import requests
 import json
 import os
-import requests
 import json
 
 from flask import Flask
@@ -58,8 +58,10 @@ def makeWebhookResult(req):
         "source": "apiai-onlinestore-shipping"
     }
 
-@app.route("/get_articles")
+@app.route("/get_articles", methods=['POST'])
 def get_articles():
+
+
     # This is the url to which the query is made
     url = "https://data.abstraction59.hasura-app.io/v1/query"
 
@@ -81,8 +83,10 @@ def get_articles():
     }
 
     # Make the query and store response in resp
-    resp = requests.request("GET", url, data=json.dumps(requestPayload), headers=headers)
+    resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
 
     # resp.content contains the json response.
     print(resp.content)
+
+    return resp.content
 
