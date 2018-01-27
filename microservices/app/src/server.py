@@ -25,7 +25,8 @@ def home():
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
-
+    print("Type")
+    print(type(request.data))
     print(request.data)
     req = json.loads(request.data)
 
