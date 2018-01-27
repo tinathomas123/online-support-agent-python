@@ -21,16 +21,16 @@ items:
         containers:
         - image: hasura/hello-world:latest
           env:
-        - name: POSTGRES_HOSTNAME
+        - name: postgres_hostname
           value: postgres.{{ cluster.metadata.namespaces.hasura }}
-        - name: POSTGRES_PORT
+        - name: postgres_port
           value: "5432"
-        - name: POSTGRES_USERNAME
+        - name: postgres_username
           valueFrom:
             secretKeyRef:
               name: hasura-secrets
               key: postgres.user
-        - name: POSTGRES_PASSWORD
+        - name: postgres_password
           valueFrom:
             secretKeyRef:
               name: hasura-secrets
