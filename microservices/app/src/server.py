@@ -27,7 +27,7 @@ def home():
 def webhook():
 
     print(request.data)
-    req = request.data
+    req = json.loads(request.data)
 
     print("Request:")
     print(json.dumps(req, indent=4))
