@@ -6,6 +6,7 @@ import requests
 import json
 import os
 import json
+import codecs
 
 from flask import Flask
 from flask import request
