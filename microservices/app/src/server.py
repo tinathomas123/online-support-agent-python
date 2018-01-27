@@ -31,9 +31,9 @@ def webhook():
     strContent=content.decode(encoding='UTF-8')
 
     print("String")
-    print(strContent)
+    print(type(strContent))
     
-    req = json.loads(request.data)
+    req = strContent
 
     print("Request:")
     print(json.dumps(req, indent=4))
