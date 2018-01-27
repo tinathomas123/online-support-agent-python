@@ -1,4 +1,4 @@
-from src import app
+
 # from flask import jsonify
 
 import urllib
@@ -58,7 +58,7 @@ def makeWebhookResult(req):
         "source": "apiai-onlinestore-shipping"
     }
 
-@app.route("/get_articles", methods=['POST'])
+@app.route("/get_articles")
 def get_articles():
 
 
@@ -83,7 +83,7 @@ def get_articles():
     }
 
     # Make the query and store response in resp
-    resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+    resp = requests.request("GET", url, data=json.dumps(requestPayload), headers=headers)
 
     # resp.content contains the json response.
     print(resp.content)
