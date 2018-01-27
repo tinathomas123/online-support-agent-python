@@ -21,10 +21,20 @@ items:
         containers:
         - image: hasura/hello-world:latest
           env:
-          - name: PRODUCTION
-            value: "true"
-          - name: CLUSTER_NAME 
-            value: {{ cluster.name }}
+        - name: POSTGRES_HOSTNAME
+          value: postgres.{{ cluster.metadata.namespaces.hasura }}
+        - name: POSTGRES_PORT
+          value: "5432"
+        - name: POSTGRES_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: hasura-secrets
+              key: postgres.user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: hasura-secrets
+              key: postgres.password
           imagePullPolicy: IfNotPresent
           name: app
           ports:
