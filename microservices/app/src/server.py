@@ -9,6 +9,24 @@ from flask import Flask
 from flask import request
 from flask import make_response
 
+PRODUCTION_ENV = os.environ.get("PRODUCTION")
+CLUSTER_NAME = os.environ.get("CLUSTER_NAME")
+if CLUSTER_NAME is None:
+    print("""
+    Set the name of your cluster as an environment variable and start again:
+
+    $ export CLUSTER_NAME=<cluster-name>
+
+    """)
+
+if PRODUCTION_ENV == "true":
+    # set dataUrl as internal url if PRODUCTION_ENV is true
+    # note that internal url has admin permissions
+    dataUrl = "http://data.hasura/v1/query"
+else:
+    # for local development, contact the cluster via external url
+    dataUrl = "https://data." + CLUSTER_NAME + ".hasura-app.io/v1/query"
+
 
 @app.route("/")
 def home():
@@ -57,9 +75,23 @@ def makeWebhookResult(req):
         "source": "apiai-onlinestore-shipping"
     }
 
-if __name__ == '__main__':
-    port = int(os.getenv('PORT', 5000))
-
-
-    app.run(debug=True, port=port, host='0.0.0.0')
+@app.route("/get_articles")
+def get_articles():
+    query = {
+        "type": "select",
+        "args": {
+            "table": "article",
+            "columns": [
+                "*"
+            ]
+        }
+    }
+    print(dataUrl)
+    print(json.dumps(query))
+    response = requests.post(
+        dataUrl, data=json.dumps(query)
+    )
+    data = response.json()
+    print(json.dumps(data))
+    return jsonify(data=data)
 
