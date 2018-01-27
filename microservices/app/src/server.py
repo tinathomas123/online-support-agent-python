@@ -5,7 +5,6 @@ import urllib
 import requests
 import json
 import os
-import ast
 
 
 from flask import Flask
@@ -27,14 +26,14 @@ def home():
 @app.route('/webhook', methods=['POST'])
 def webhook():
     
-    print(request.data)
+    print(request)
     content=request.data
     strContent=content.decode(encoding='UTF-8')
 
     print("String")
-    print(type(strContent))
+    print(strContent)
     
-    req = ast.literal_eval(strContent)
+    req = json.loads(strContent)
 
     print("Request:")
     print(json.dumps(req, indent=4))
