@@ -62,8 +62,6 @@ def makeWebhookResult(req):
 
 @app.route("/get_articles")
 def get_articles():
-    print("inside method")
-
     # This is the url to which the query is made
     url = "https://data.abstraction59.hasura-app.io/v1/query"
 
@@ -80,12 +78,11 @@ def get_articles():
 
     # Setting headers
     headers = {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer d3a378c0f2330fc9d555c47ff4035adc374ba5b52b0c17e7"
+        "Content-Type": "application/json"
     }
 
     # Make the query and store response in resp
-    resp = requests.get(url, data=json.dumps(requestPayload), headers=headers)
+    resp = requests.post(url, data=json.dumps(requestPayload), headers=headers)
 
     # resp.content contains the json response.
     print(resp.content)
