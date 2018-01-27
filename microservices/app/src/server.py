@@ -85,7 +85,7 @@ def get_articles():
     }
 
     # Make the query and store response in resp
-    resp = requests.request("GET", url, data=json.dumps(requestPayload), headers=headers)
+    resp = requests.get(url, data=json.dumps(requestPayload), headers=headers)
 
     # resp.content contains the json response.
     print(resp.content)
