@@ -28,7 +28,8 @@ def home():
 def webhook():
 
     print(request.data)
-    content = codecs.decode(request.data,'utf-8')
+    #content = codecs.decode(request.data,'utf-8')
+    content=json.dumps(request.data)
     req=json.loads(content)
 
     print("Request:")
