@@ -28,7 +28,7 @@ def webhook():
     print("Type")
     print(type(request.data))
     print(request.data)
-    req = json.loads(request.data)
+    req = json.loads(request.data.decode('utf8'))
 
     print("Request:")
     print(json.dumps(req, indent=4))
