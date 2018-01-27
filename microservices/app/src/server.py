@@ -4,29 +4,12 @@ from src import app
 import urllib
 import json
 import os
+import requests
+import json
 
 from flask import Flask
 from flask import request
 from flask import make_response
-
-PRODUCTION_ENV = os.environ.get("PRODUCTION")
-CLUSTER_NAME = os.environ.get("CLUSTER_NAME")
-if CLUSTER_NAME is None:
-    print("""
-    Set the name of your cluster as an environment variable and start again:
-
-    $ export CLUSTER_NAME=<cluster-name>
-
-    """)
-
-if PRODUCTION_ENV == "true":
-    # set dataUrl as internal url if PRODUCTION_ENV is true
-    # note that internal url has admin permissions
-    dataUrl = "http://data.hasura/v1/query"
-else:
-    # for local development, contact the cluster via external url
-    dataUrl = "https://data." + CLUSTER_NAME + ".hasura-app.io/v1/query"
-
 
 @app.route("/")
 def home():
@@ -77,18 +60,11 @@ def makeWebhookResult(req):
 
 @app.route("/get_articles")
 def get_articles():
-    var fetchAction =  require('fetch');
+    # This is the url to which the query is made
+    url = "https://data.abstraction59.hasura-app.io/v1/query"
 
-    var url = "https://data.abstraction59.hasura-app.io/v1/query";
-
-    var requestOptions = {
-        "method": "POST",
-        "headers": {
-            "Content-Type": "application/json"
-        }
-    };
-
-    var body = {
+    # This is the json payload for the query
+    requestPayload = {
         "type": "select",
         "args": {
             "table": "article",
@@ -96,18 +72,16 @@ def get_articles():
                 "*"
             ]
         }
-    };
+    }
 
-    requestOptions.body = JSON.stringify(body);
+    # Setting headers
+    headers = {
+        "Content-Type": "application/json"
+    }
 
-    fetchAction(url, requestOptions)
-    .then(function(response) {
-            return response.json();
-    })
-    .then(function(result) {
-            console.log(result);
-    })
-    .catch(function(error) {
-            console.log('Request Failed:' + error);
-    });
+    # Make the query and store response in resp
+    resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+
+    # resp.content contains the json response.
+    print(resp.content)
 
