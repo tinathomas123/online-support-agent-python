@@ -62,7 +62,7 @@ def makeWebhookResult(req):
 
 @app.route("/get_articles")
 def get_articles():
-
+    print("inside method")
 
     # This is the url to which the query is made
     url = "https://data.abstraction59.hasura-app.io/v1/query"
