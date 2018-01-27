@@ -26,7 +26,7 @@ def home():
 @app.route('/webhook', methods=['POST'])
 def webhook():
     
-    print(request)
+    print(request.data)
     content=request.data
     strContent=content.decode(encoding='UTF-8')
 
