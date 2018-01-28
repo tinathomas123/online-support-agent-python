@@ -44,53 +44,93 @@ def webhook():
     return r
 
 def makeWebhookResult(req):
-    if req.get("queryResult").get("action") != "shipping.cost":
-        return {}
-    result = req.get("queryResult")
-    parameters = result.get("parameters")
-    zone = parameters.get("shipping_zone")
+    if req.get("queryResult").get("action") == "shipping.cost":
+        
+        result = req.get("queryResult")
+        parameters = result.get("parameters")
+        zone = parameters.get("shipping_zone")
 
-    #cost = {'Europe':100, 'North America':200, 'South America':300, 'Asia':400, 'Africa':500}
+        #cost = {'Europe':100, 'North America':200, 'South America':300, 'Asia':400, 'Africa':500}
 
-    # This is the url to which the query is made
-    url = "https://data.abstraction59.hasura-app.io/v1/query"
+        # This is the url to which the query is made
+        url = "https://data.abstraction59.hasura-app.io/v1/query"
 
-    # This is the json payload for the query
-    requestPayload = {
-        "type": "select",
-        "args": {
-            "table": "shipping-cost",
-            "columns": [
-                "cost"
-            ],
-            "where": {
-                "zone": {
-                    "$eq": zone
+        # This is the json payload for the query
+        requestPayload = {
+            "type": "select",
+            "args": {
+                "table": "shipping-cost",
+                "columns": [
+                    "cost"
+                ],
+                "where": {
+                    "zone": {
+                        "$eq": zone
+                    }
                 }
             }
         }
-    }
 
-    # Setting headers
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer d3a378c0f2330fc9d555c47ff4035adc374ba5b52b0c17e7"
-    }
+        # Setting headers
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer d3a378c0f2330fc9d555c47ff4035adc374ba5b52b0c17e7"
+        }
 
-    # Make the query and store response in resp
-    resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+        # Make the query and store response in resp
+        resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
 
-    # resp.content contains the json response.
-    print(resp.content)
+        # resp.content contains the json response.
+        print(resp.content)
 
-    print("cost")
-    cost=json.loads(resp.content)[0].get("cost")
+        print("cost")
+        cost=json.loads(resp.content)[0].get("cost")
 
+        speech = "The cost of shipping to " + zone + " is " + str(cost) + " euros."
 
+    else if req.get("queryResult").get("action") == "orders.status":
 
+        result = req.get("queryResult")
+        parameters = result.get("parameters")
+        order_no = parameters.get("order-number")
+
+        
+        # This is the url to which the query is made
+        url = "https://data.abstraction59.hasura-app.io/v1/query"
+
+        # This is the json payload for the query
+        requestPayload = {
+            "type": "select",
+            "args": {
+                "table": "order-number",
+                "columns": [
+                    "order-status"
+                ],
+                "where": {
+                    "order-number": {
+                        "$eq": order_no
+                    }
+                }
+            }
+        }
+
+        # Setting headers
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer d3a378c0f2330fc9d555c47ff4035adc374ba5b52b0c17e7"
+        }
+
+        # Make the query and store response in resp
+        resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+
+        # resp.content contains the json response.
+        print(resp.content)
+        order_status=json.loads(resp.content)[0].get("order-status")
+
+        speech = "Order Status for " + order_no + " is " + order_status + "."
     
 
-    speech = "The cost of shipping to " + zone + " is " + str(cost) + " euros."
+    
 
     print("Response:")
     print(speech)
