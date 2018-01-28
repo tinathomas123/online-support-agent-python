@@ -44,16 +44,25 @@ def webhook():
     return r
 
 def makeWebhookResult(req):
+
+    # This is the url to which the query is made
+    url = "https://data.abstraction59.hasura-app.io/v1/query"
+
+    # Setting headers
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer d3a378c0f2330fc9d555c47ff4035adc374ba5b52b0c17e7"
+    }
+
+    result = req.get("queryResult")
+    parameters = result.get("parameters")
+
+    
     if req.get("queryResult").get("action") == "shipping.cost":
         
-        result = req.get("queryResult")
-        parameters = result.get("parameters")
         zone = parameters.get("shipping_zone")
 
         #cost = {'Europe':100, 'North America':200, 'South America':300, 'Asia':400, 'Africa':500}
-
-        # This is the url to which the query is made
-        url = "https://data.abstraction59.hasura-app.io/v1/query"
 
         # This is the json payload for the query
         requestPayload = {
@@ -71,12 +80,6 @@ def makeWebhookResult(req):
             }
         }
 
-        # Setting headers
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer d3a378c0f2330fc9d555c47ff4035adc374ba5b52b0c17e7"
-        }
-
         # Make the query and store response in resp
         resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
 
@@ -90,13 +93,7 @@ def makeWebhookResult(req):
 
     elif req.get("queryResult").get("action") == "orders.status":
 
-        result = req.get("queryResult")
-        parameters = result.get("parameters")
         order_no = parameters.get("order-number")
-
-        
-        # This is the url to which the query is made
-        url = "https://data.abstraction59.hasura-app.io/v1/query"
 
         # This is the json payload for the query
         requestPayload = {
@@ -114,10 +111,33 @@ def makeWebhookResult(req):
             }
         }
 
-        # Setting headers
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer d3a378c0f2330fc9d555c47ff4035adc374ba5b52b0c17e7"
+        # Make the query and store response in resp
+        resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+
+        # resp.content contains the json response.
+        print(resp.content)
+        order_status=json.loads(resp.content)[0].get("order-status")
+
+        speech = "Order Status for " + order_no + " is " + order_status + "."
+
+    elif req.get("queryResult").get("action") == "shipping.time":
+
+        order_no = parameters.get("order-number")
+
+        # This is the json payload for the query
+        requestPayload = {
+            "type": "select",
+            "args": {
+                "table": "order-number",
+                "columns": [
+                    "order-status"
+                ],
+                "where": {
+                    "order-number": {
+                        "$eq": order_no
+                    }
+                }
+            }
         }
 
         # Make the query and store response in resp
@@ -127,7 +147,33 @@ def makeWebhookResult(req):
         print(resp.content)
         order_status=json.loads(resp.content)[0].get("order-status")
 
-        speech = "Order Status for " + order_no + " is " + order_status + "."
+        # This is the json payload for the query
+        requestPayload = {
+            "type": "select",
+            "args": {
+                "table": "shipping-time",
+                "columns": [
+                    "shipping-time-in-days"
+                ],
+                "where": {
+                    "order-status": {
+                        "$eq": order_status
+                    }
+                }
+            }
+        }
+
+        
+
+        # Make the query and store response in resp
+        resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+
+        # resp.content contains the json response.
+        print(resp.content)
+        shipping_time=json.loads(resp.content)[0].get("shipping-time-in-days")
+
+        speech = order_no + " will be delivered by " + shipping_time + " days."
+
     
 
     
