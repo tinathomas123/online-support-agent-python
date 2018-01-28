@@ -172,7 +172,7 @@ def makeWebhookResult(req):
         print(resp.content)
         shipping_time=json.loads(resp.content)[0].get("shipping-time-in-days")
 
-        speech = order_no + " will be delivered by " + shipping_time + " days."
+        speech = str(order_no) + " will be delivered by " + str(shipping_time) + " days."
 
     
 
