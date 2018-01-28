@@ -10,6 +10,7 @@ import os
 from flask import Flask
 from flask import request
 from flask import make_response
+from flask import jsonify
 
 app=Flask(__name__)
 
@@ -34,7 +35,7 @@ def webhook():
     print(str(strContent))
 
     print("json")
-    print(jsonify(strContent))
+    print(json.jsonify(strContent))
     print(request.is_json)
     
     req = ast.literal_eval(str(strContent))
