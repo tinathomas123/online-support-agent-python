@@ -35,10 +35,11 @@ def webhook():
     print(str(strContent))
 
     print("json")
-    print(json.jsonify(strContent))
-    print(request.is_json)
     
-    req = ast.literal_eval(str(strContent))
+    print(request.is_json)
+    print(jsonify(strContent))
+    
+    req = jsonify(strContent)
 
     print("Request:")
     print(json.dumps(req, indent=4))
