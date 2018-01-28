@@ -32,14 +32,14 @@ def webhook():
     strContent=content.decode(encoding='UTF-8')
 
     print("String")
-    print(str(strContent))
+    print(strContent)
 
     print("json")
     
     print(request.is_json)
     print(jsonify(strContent))
     
-    req = request.data
+    req = json.loads(strContent)
 
     print("Request:")
     print(json.dumps(req, indent=4))
