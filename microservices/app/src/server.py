@@ -27,18 +27,8 @@ def home():
 @app.route('/webhook', methods=['POST'])
 def webhook():
     
-    print(request.data)
     content=request.data
     strContent=content.decode(encoding='UTF-8')
-
-    print("String")
-    print(strContent)
-
-    print("json")
-    
-    print(request.is_json)
-    print(type(json.loads(strContent)))
-    print(json.loads(strContent))
     
     req = json.loads(strContent)
 
@@ -61,6 +51,44 @@ def makeWebhookResult(req):
     zone = parameters.get("shipping_zone")
 
     cost = {'Europe':100, 'North America':200, 'South America':300, 'Asia':400, 'Africa':500}
+
+    # This is the url to which the query is made
+    url = "https://data.abstraction59.hasura-app.io/v1/query"
+
+    # This is the json payload for the query
+    requestPayload = {
+        "type": "select",
+        "args": {
+            "table": "shipping-cost",
+            "columns": [
+                "cost"
+            ],
+            "where": {
+                "zone": {
+                    "$eq": zone
+                }
+            }
+        }
+    }
+
+    # Setting headers
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer d3a378c0f2330fc9d555c47ff4035adc374ba5b52b0c17e7"
+    }
+
+    # Make the query and store response in resp
+    resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+
+    # resp.content contains the json response.
+    print(resp.content)
+
+    print("cost")
+    print(resp.content.get("cost"))
+
+
+
+    
 
     speech = "The cost of shipping to " + zone + " is " + str(cost[zone]) + " euros."
 
