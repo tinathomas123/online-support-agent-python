@@ -50,7 +50,7 @@ def makeWebhookResult(req):
     parameters = result.get("parameters")
     zone = parameters.get("shipping_zone")
 
-    cost = {'Europe':100, 'North America':200, 'South America':300, 'Asia':400, 'Africa':500}
+    #cost = {'Europe':100, 'North America':200, 'South America':300, 'Asia':400, 'Africa':500}
 
     # This is the url to which the query is made
     url = "https://data.abstraction59.hasura-app.io/v1/query"
@@ -84,13 +84,13 @@ def makeWebhookResult(req):
     print(resp.content)
 
     print("cost")
-    print(json.loads(resp.content)[0].get("cost"))
+    cost=json.loads(resp.content)[0].get("cost")
 
 
 
     
 
-    speech = "The cost of shipping to " + zone + " is " + str(cost[zone]) + " euros."
+    speech = "The cost of shipping to " + zone + " is " + cost + " euros."
 
     print("Response:")
     print(speech)
