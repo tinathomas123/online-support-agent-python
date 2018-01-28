@@ -38,6 +38,7 @@ def webhook():
     
     print(request.is_json)
     print(type(json.loads(strContent)))
+    print(json.loads(strContent))
     
     req = json.loads(strContent)
 
