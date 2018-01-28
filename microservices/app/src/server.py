@@ -39,7 +39,7 @@ def webhook():
     print(request.is_json)
     print(type(json.loads(strContent)))
     
-    req = json.loads(request.data)
+    req = json.loads(strContent)
 
     print("Request:")
     print(json.dumps(req, indent=4))
