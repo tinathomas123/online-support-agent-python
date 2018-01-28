@@ -60,7 +60,7 @@ def makeWebhookResult(req):
     
     if req.get("queryResult").get("action") == "shipping.cost":
         
-        zone = parameters.get("shipping_zone")
+        zone = parameters.get("shipping_country")
 
         #cost = {'Europe':100, 'North America':200, 'South America':300, 'Asia':400, 'Africa':500}
 
