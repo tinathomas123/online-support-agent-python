@@ -88,7 +88,7 @@ def makeWebhookResult(req):
 
         speech = "The cost of shipping to " + zone + " is " + str(cost) + " euros."
 
-    else if req.get("queryResult").get("action") == "orders.status":
+    elif req.get("queryResult").get("action") == "orders.status":
 
         result = req.get("queryResult")
         parameters = result.get("parameters")
