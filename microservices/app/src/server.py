@@ -54,7 +54,7 @@ def webhook():
     return r.json()
 
 def makeWebhookResult(req):
-    if req.get("result").get("action") != "shipping.cost":
+    if req.get("queryResult").get("action") != "shipping.cost":
         return {}
     result = req.get("result")
     parameters = result.get("parameters")
