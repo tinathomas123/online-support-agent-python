@@ -84,7 +84,7 @@ def makeWebhookResult(req):
     print(resp.content)
 
     print("cost")
-    print(json.loads(resp.content).get("cost"))
+    print(json.loads(resp.content)[0].get("cost"))
 
 
 
