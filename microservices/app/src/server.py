@@ -90,7 +90,7 @@ def makeWebhookResult(req):
 
     
 
-    speech = "The cost of shipping to " + zone + " is " + cost + " euros."
+    speech = "The cost of shipping to " + zone + " is " + str(cost) + " euros."
 
     print("Response:")
     print(speech)
