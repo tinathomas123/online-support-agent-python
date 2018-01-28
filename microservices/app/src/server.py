@@ -51,7 +51,7 @@ def webhook():
     print(res)
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
-    return r.json()
+    return r
 
 def makeWebhookResult(req):
     if req.get("queryResult").get("action") != "shipping.cost":
