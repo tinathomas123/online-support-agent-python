@@ -24,3 +24,9 @@ remotes:
 
     # Add output of `hasura conf generate-remote` below this line
 
+
+    '{{ cluster.metadata.namespaces.user }}.my-chatbot':
+      my-chatbot:
+        dockerfile: microservices/my-chatbot/Dockerfile
+        path: microservices/my-chatbot
+
