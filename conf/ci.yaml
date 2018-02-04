@@ -27,6 +27,6 @@ remotes:
 
     '{{ cluster.metadata.namespaces.user }}.my-chatbot':
       my-chatbot:
-        dockerfile: microservices/my-chatbot/Dockerfile
+        dockerfile: microservices/my-chatbot/app/Dockerfile
         path: microservices/my-chatbot
 
